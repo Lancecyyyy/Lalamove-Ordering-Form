@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lalamove Order Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&family=Inter:wght@400;500;600&family=Space+Mono:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F4F5;
+    --surface: #FFFFFF;
+    --surface-2: #FFFFFF;
+    --border: #DADCE0;
+    --orange: #FF6A1A;
+    --orange-soft: rgba(255, 106, 26, 0.1);
+    --text: #2B2B2D;
+    --text-soft: #6B6E76;
+    --text-faint: #9AA0AA;
+    --green: #16803C;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 16px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 460px;
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 40px 36px 32px;
+    box-shadow: 0 12px 36px rgba(43, 43, 45, 0.08);
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .logo { height: 120px; max-width: 220px; width: auto; object-fit: contain; display: block; }
+
+  .logo-fallback {
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-fallback .mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+
+  .logo-fallback .name {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+    color: var(--orange);
+  }
+
+  .order-chip {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-soft);
+    background: var(--bg);
+    padding: 5px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.4px;
+    margin: 0 auto 28px;
+    display: table;
+  }
+
+  .route { display: flex; gap: 14px; }
+
+  .route-markers { display: flex; flex-direction: column; align-items: center; padding-top: 16px; }
+
+  .pin { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .pin.start { background: var(--orange); }
+  .pin.end { border: 2px solid var(--orange); background: transparent; width: 8px; height: 8px; }
+
+  .route-line {
+    width: 1px;
+    flex: 1;
+    min-height: 60px;
+    background: repeating-linear-gradient(to bottom, var(--border) 0, var(--border) 4px, transparent 4px, transparent 8px);
+    margin: 4px 0;
+  }
+
+  .route-fields { flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+
+  .section-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    margin: 8px 0 2px;
+  }
+
+  .section-label.first { margin-top: 0; }
+
+  input[type="text"], select, textarea {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    padding: 13px 14px;
+    transition: border-color 0.15s ease;
+  }
+
+  input::placeholder, textarea::placeholder { color: var(--text-faint); }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--orange);
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B6E76' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 34px;
+    cursor: pointer;
+  }
+
+  .zone-hint { font-size: 0.74rem; color: var(--text-faint); margin-top: 2px; }
+
+  textarea { resize: vertical; min-height: 64px; margin-top: 18px; }
+
+  .summary {
+    margin-top: 24px;
+    padding: 16px 18px;
+    background: var(--bg);
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .summary-label { font-size: 0.85rem; color: var(--text-soft); }
+
+  .summary-price {
+    font-family: 'Space Mono', monospace;
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--green);
+  }
+
+  button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 22px;
+    background: var(--orange);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.12s ease;
+  }
+
+  button:hover { background: #E85A0E; transform: translateY(-1px); }
+  button:active { transform: translateY(0); }
+  button:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    button:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="brand">
+    <img class="logo" src="logo.png" alt="Company logo" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+    <div class="logo-fallback" id="logoFallback">
+      <div class="mark"></div>
+      <div class="name">YOURBRAND</div>
+    </div>
+  </div>
+  <div class="order-chip" id="orderChip">LM-000000</div>
+
+  <form id="SurveySheet">
+    <input type="hidden" name="orderNumber" id="orderNumber">
+
+    <div class="route">
+      <div class="route-markers">
+        <div class="pin start"></div>
+        <div class="route-line"></div>
+        <div class="pin end"></div>
+      </div>
+      <div class="route-fields">
+        <span class="section-label first">Pickup details</span>
+        <input type="text" name="senderName" id="senderName" placeholder="Sender name" required>
+        <input type="text" name="senderNumber" id="senderNumber" placeholder="Sender mobile number" required>
+        <input type="text" name="senderLocation" id="senderLocation" placeholder="Pickup address" required>
+
+        <span class="section-label">Drop-off details</span>
+        <input type="text" name="receiverName" id="receiverName" placeholder="Receiver name" required>
+        <input type="text" name="receiverNumber" id="receiverNumber" placeholder="Receiver mobile number" required>
+        <input type="text" name="receiverLocation" id="receiverLocation" placeholder="Drop-off address" required>
+
+        <div>
+          <select name="deliveryZone" id="deliveryZone" required>
+            <option value="">Select delivery zone</option>
+            <option value="Dasmariñas, Cavite" data-price="99">Dasmariñas, Cavite — ₱99</option>
+            <option value="Imus, Cavite" data-price="120">Imus, Cavite — ₱120</option>
+            <option value="Bacoor, Cavite" data-price="150">Bacoor, Cavite — ₱150</option>
+            <option value="Tagaytay, Cavite" data-price="220">Tagaytay, Cavite — ₱220</option>
+            <option value="Manila" data-price="280">Manila — ₱280</option>
+            <option value="Makati" data-price="300">Makati — ₱300</option>
+          </select>
+          <div class="zone-hint">Sets the fixed delivery fee — doesn't need to match the address above exactly.</div>
+        </div>
+      </div>
+    </div>
+
+    <textarea name="item" id="item" placeholder="What are you sending?" required></textarea>
+
+    <div class="summary">
+      <span class="summary-label">Fixed delivery fee</span>
+      <span class="summary-price" id="priceDisplay">₱—</span>
+    </div>
+    <input type="hidden" name="price" id="price">
+
+    <button type="submit" id="submitBtn" disabled>Select delivery zone to continue</button>
+  </form>
+</div>
+
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbx_B61Ams2aB0gMzeLGZ8sk-KlvOArGZCjijBT_XdtQwCBdpgIw4pNHjXGU4LCLQ6Vb/exec';
+  const form = document.getElementById('SurveySheet');
+  const orderNumberField = document.getElementById('orderNumber');
+  const orderChip = document.getElementById('orderChip');
+  const deliveryZone = document.getElementById('deliveryZone');
+  const priceField = document.getElementById('price');
+  const priceDisplay = document.getElementById('priceDisplay');
+  const submitBtn = document.getElementById('submitBtn');
+
+  function generateOrderNumber() {
+    const now = new Date();
+    const datePart = now.getFullYear().toString() +
+      String(now.getMonth() + 1).padStart(2, '0') +
+      String(now.getDate()).padStart(2, '0');
+    const randomPart = Math.floor(1000 + Math.random() * 9000);
+    return 'LM-' + datePart + '-' + randomPart;
+  }
+
+  const orderNumber = generateOrderNumber();
+  orderNumberField.value = orderNumber;
+  orderChip.textContent = orderNumber;
+
+  deliveryZone.addEventListener('change', () => {
+    const selected = deliveryZone.options[deliveryZone.selectedIndex];
+    const price = selected.getAttribute('data-price');
+    if (price) {
+      priceField.value = price;
+      priceDisplay.textContent = '₱' + price;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Book delivery';
+    } else {
+      priceField.value = '';
+      priceDisplay.textContent = '₱—';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Select delivery zone to continue';
+    }
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Booking...';
+
+    try {
+      await fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: new URLSearchParams(new FormData(form))
+      });
+
+      alert('✓ Order ' + orderNumberField.value + ' booked successfully');
+      form.reset();
+      orderNumberField.value = orderNumber;
+      priceDisplay.textContent = '₱—';
+      submitBtn.textContent = 'Select delivery zone to continue';
+    } catch (error) {
+      alert('Error: ' + error.message);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Book delivery';
+    }
+  });
+</script>
+
+</body>
+</html>
